@@ -1,36 +1,79 @@
 const axios = require("axios")
 const URL = `https://rickandmortyapi.com/api/character/` 
 
-exports.getCharById = (req, res) => {
+exports.getCharById = async (req,res) => {
+
+  try{
     const {id} = req.params
-    axios.get(`${URL}${id}`)
-    .then((response) =>{
-        if(response.data){
+    const {data} = await axios.get(`${URL}${id}`)
 
-            const dato = response.data
-
-            let character = {
-                id: dato.id,
-                name: dato.name,
-                gender: dato.gender,
-                species: dato.species,
-                origin: dato.origin.name,
-                 image: dato?.image,
-                status: dato.status
+    if(data){
+                  let character = {
+                id: data.id,
+                name: data.name,
+                gender: data.gender,
+                species: data.species,
+                origin: data.origin.name,
+                 image: data?.image,
+                status: data.status
             }
-
             res.status(200).json(character)
-        }
-        else{
-            res.status(404).json({Message: "Not fount"})
-        }
 
-    })
-    .catch((error)=>{
-        res.status(500).json({Message: error.message})
-    })
+    } else{
+      res.status(404).json({Message: "Not fount"})
+      
+    }
 
+  }catch(error){
+            res.status(500).json({Message: error.message})
+         }
+  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //___________EXPRESS _____________
+
+// exports.getCharById = (req, res) => {
+//     const {id} = req.params
+//     axios.get(`${URL}${id}`)
+//     .then((response) =>{
+//         if(response.data){
+
+//             const dato = response.data
+
+//             let character = {
+//                 id: dato.id,
+//                 name: dato.name,
+//                 gender: dato.gender,
+//                 species: dato.species,
+//                 origin: dato.origin.name,
+//                  image: dato?.image,
+//                 status: dato.status
+//             }
+
+//             res.status(200).json(character)
+//         }
+//         else{
+//             res.status(404).json({Message: "Not fount"})
+//         }
+
+//     })
+//     .catch((error)=>{
+//         res.status(500).json({Message: error.message})
+//     })
+
+// }
  
  
  
@@ -38,11 +81,7 @@ exports.getCharById = (req, res) => {
  
  
  
- 
- 
- 
- 
- 
+
  
  
  //______WEBSERVER__________________
